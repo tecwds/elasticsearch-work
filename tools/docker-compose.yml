@@ -50,6 +50,7 @@ services:
       - ELASTICSEARCH_HOSTS=http://elastic-search:9200
       - ELASTICSEARCH_USERNAME=kibana
       - ELASTICSEARCH_PASSWORD=kibana
+      - I18N_LOCALE=zh-CN
     volumes:
       - kibana:/usr/share/kibana/data
     ports:
