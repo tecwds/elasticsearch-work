@@ -28,6 +28,7 @@ services:
       - elasticsearch-plugins:/usr/share/elasticsearch/plugins
     ports:
       - "9200:9200"
+      - "9300:9300"
     networks:
       - elastic
     healthcheck:
@@ -63,11 +64,33 @@ services:
       timeout: 30s
       retries: 120
       start_period: 30s
+  
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.15.3
+    container_name: 'logstash'
+    restart: unless-stopped
+    depends_on:
+      - elastic-search
+    networks:
+      - elastic
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/etc/localtime:/etc/localtime"
+      - "/etc/timezone:/etc/timezone"
+      - "logstash-pipline:/usr/share/logstash/pipline/"
+      - "../projects/:/usr/share/wwwlogs/projects"
+    
 
 networks:
   elastic:
   
 volumes:
   kibana:
+  logstash-pipline:
   elasticsearch-data:
   elasticsearch-plugins:
+  
