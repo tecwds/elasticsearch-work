@@ -81,7 +81,7 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime"
       - "/etc/timezone:/etc/timezone"
-      - "logstash-pipline:/usr/share/logstash/pipline/"
+      - "logstash-pipeline:/usr/share/logstash/pipeline/"
       - "../projects/:/usr/share/wwwlogs/projects"
     
 
@@ -90,7 +90,7 @@ networks:
   
 volumes:
   kibana:
-  logstash-pipline:
+  logstash-pipeline:
   elasticsearch-data:
   elasticsearch-plugins:
   
