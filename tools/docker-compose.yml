@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     environment:
       - ELASTIC_PASSWORD=elastic
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms5G -Xmx5G"
       - discovery.type=single-node
       # - bootstrap.mlockall=true
       - bootstrap.memory_lock true
@@ -69,21 +69,21 @@ services:
     image: docker.elastic.co/logstash/logstash:8.15.3
     container_name: 'logstash'
     restart: unless-stopped
+    entrypoint: "top -b"
     depends_on:
       - elastic-search
     networks:
-      - elastic
+      elastic:
     ports:
       - "5044:5044"
       - "9600:9600"
     environment:
       - TZ=Asia/Shanghai
+      - XPACK_MONITORING_ELASTICSEARCH_HOSTS=http://elastic-search:9200
     volumes:
       - "/etc/localtime:/etc/localtime"
       - "/etc/timezone:/etc/timezone"
-      - "logstash-pipeline:/usr/share/logstash/pipeline/"
-      - "../projects/:/usr/share/wwwlogs/projects"
-    
+      - "./pipeline:/usr/share/logstash/pipeline/"
 
 networks:
   elastic:
